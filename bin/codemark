@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
-require './codemark'
+$LOAD_PATH.unshift File.join(File.dirname(__FILE__), *%w[.. lib])
+require 'codemark'
 
 fail ArgumentError, "Usage:  codemark [filename.Rmd]\n" if ARGV.count == 0
 
@@ -14,4 +15,7 @@ rendered = code.render(rmd_file)
 
 # Output R file
 file = filename_rmd.match(/(?<name>.*)\.rmd/i)
-File.write("#{file[:name]}.R", rendered)
+filename_r = "#{file[:name]}.R"
+File.write(filename_r, rendered)
+
+puts "#{filename_r} written\n"
