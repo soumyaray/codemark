@@ -7,5 +7,5 @@ end
 
 desc 'Rerun specs'
 task :respec do
-  sh 'rerun -c -p "**/*.{rb,Rmd}" ruby bin_codemark.rb sem-intro.Rmd'
+  sh 'rerun -c -p "**/*.{rb,Rmd}" ./bin/codemark sem-intro.Rmd'
 end

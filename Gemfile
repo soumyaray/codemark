@@ -1,7 +1,9 @@
 source 'https://rubygems.org'
+gemspec
 
 gem 'redcarpet'
 
 # Development dependencies
-gem 'rerun'
-gem 'pry'
+group :test
+  gem 'rake'
+end

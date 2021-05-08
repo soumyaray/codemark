@@ -9,7 +9,7 @@ filename_rmd = ARGV[0]
 rmd_file = File.open(filename_rmd, 'r').read
 
 # Convert Rmd to R
-code = Redcarpet::Markdown.new(MarkdownToR.new, extensions = {})
+code = Redcarpet::Markdown.new(CodeMark::MarkdownToR.new, extensions = {})
 rendered = code.render(rmd_file)
 
 # Output R file
