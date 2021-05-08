@@ -33,7 +33,11 @@ module CodeMark
     # end
 
     def header(text, header_level)
-      "#" + "*"*header_level + " " + text + "\n\n"
+      if (@code_started and !@code_ignore)
+        "# " + text + "\n"
+      else
+        "#" + "*"*header_level + " " + text + "\n\n"
+      end
     end
 
     def hrule()

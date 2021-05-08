@@ -24,7 +24,23 @@ CodeMark will produce a corresponding file called `filename.R`
 
 ## Testing
 
-Not yet implemented
+There is only one test currently, and it ensures that fixtures are processed accurately (i.e., a given Rmd file is correctly converted into a given R file).
+
+```shell
+rake spec
+```
+
+If the R file is accurately produced, `minitest` helpfully shows line diffs between the fixture R file and the generated R script.
+
+If you deliberately change the behavior of CodeMark so that it produces different R output, then you must update the R script fixture:
+
+```shell
+rake install      # builds and reinstalls codemark gem locally
+cd spec/fixtures
+codemark sem-intro.Rmd
+```
+
+
 
 ## Contribute
 

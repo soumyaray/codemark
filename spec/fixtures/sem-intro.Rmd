@@ -6,13 +6,79 @@ output: pdf_document
 always_allow_html: true
 ---
 
+# Introduction to R
+
+The best way to learn R from scratch is by installing and running the [Swirl](https://swirlstats.com/students.html) tutorials in RStudio. Here, we review the most basic essentials to R.
+
+Variables: R allows you to store data, values, and results of your analyses in variables. Here is an example of how to assign values to variables:
+
+```{r}
+value <- 5
+construct_name <- "PO"
+```
+
+Collections: Multiple values can be defined and stored together. Vectors are collections of simple values (numbers, characters). Lists are collections of simple values or even other collections
+
+```{r}
+# Vector of five numbers
+numbers <- c(1, 2, 3, 4, 5)
+
+# Vector of characters (letters or numbers in quotes)
+construct_names <- c("PO", "PI")
+
+# List of values and vectors
+construct_definition <- list(
+  name = "Purchase Intention",
+  items = c("pi_1", "pi_2", "pi_3", "pi_4"))
+```
+
+We can then extract what we have stored in these collections as we need them.
+
+```{r}
+construct_names[2]
+
+construct_definition$items
+```
+
+Operations: Simple mathematical operations can be computed on values (numbers, words, etc.) or on variables. R is specially suited to performing operations on vectors (like our `numbers` from above).
+
+```{r, }
+5 * 2
+
+numbers <- 1:5
+
+numbers^2
+```
+
+Functions: Complex operations that require more information to compute are often packaged as functions. These function takes arguments and return results that can be stored in variables or displayed on screen. Note that comments (descriptive text that does not run) is prefixed with a pound sign ("#").
+
+```{r}
+# load data from a file into a variable using the "read.csv" function
+influence_data <- read.csv("data/influencer_data_book_final.csv")
+
+# run a regression analysis
+influence_regr <- lm(formula = pi_1 ~ pq_1 + sic_1, data = influence_data)
+
+# show a summary of results from the regression on screen
+summary(influence_regr)
+
+# save the summary to a variable for further inspection
+regr_report <- summary(influence_regr)
+```
+
+Variables, like the regression report we are storing in `regr_report`, often contain a deeper structure of values that one can inspect:
+
+```{r}
+regr_report$r.squared
+```
+
 # Introduction SEM
 
 Structural Equation Modeling excels at allowing researchers to measure relationships between multi-item constructs. *Constructs* are statistical representation of concepts that are hard to measure in with a singular metric, and are best represented by multiple measurements.
 
 Each SEM is defined by two models: a **measurement model** that describes how each construct is measured using multiple items, and **structural model** that describes the structure of causal relationships between the constructs. The parameters of an SEM can then be **estimated** and **visualized** by the SEMinR package.
 
-```{r eval=TRUE, echo=FALSE}
+```{r echo=FALSE, cache=TRUE}
 library(seminr)
 
 influence_mm <- constructs(
@@ -27,7 +93,6 @@ influence_model <- specify_model(influence_mm, influence_sm)
 influence_model_plot <- plot(influence_model)
 save_plot("figures/influencer_model_plot.png", influence_model_plot)
 ```
-
 ```{r simpleModel, fig.align = 'center', out.width = "50%", fig.cap = "Simplified Influencer Model", echo = F}
 knitr::include_graphics("figures/influencer_model_plot.png")
 ```
@@ -35,7 +100,6 @@ knitr::include_graphics("figures/influencer_model_plot.png")
 # Measurement Model
 
 We can define the measurement model of an SEM simply by describing each  construct by its set of *measurement items* that *reflect* the underlying concept. Let's see a simplified example from the Influencer model and dataset we will use:
-
 ```{r}
 library(seminr)
 
@@ -50,7 +114,6 @@ Four constructs are defined in this measurement model. Note how the constructs a
 # Structural Model
 
 We can define the structural model of an SEM by specifying the *relationships* between the constructs — specifically, the causal paths *from* each construct *to* other constructs.
-
 ```{r}
 influence_sm <- relationships(
   paths(from = c("PL", "PQ"), to = c("PI")))
@@ -91,7 +154,7 @@ The `influence_summary` object holds a wealth of other estimated values that res
 influence_summary$quality$fit
 ```
 
-```{r eval=FALSE, echo=TRUE}
+```{r echo=FALSE}
 influence_summary$quality$fit$curated$ordinary
 ```
 
@@ -112,6 +175,10 @@ influence_summary$paths
 # Visualization
 
 Researchers often find that it is helpful to get a high-level glimpse of their model description and results from a visualization.
+
+```{r eval=FALSE}
+plot(influence_model)
+```
 
 ```{r echo=FALSE, results='hide', cache=TRUE}
 png(filename = "figures/influence_estimated_plot.png", width = 900, height=600)
